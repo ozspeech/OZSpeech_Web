@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="OZSpeech: One-step Zero-shot Speech Synthesis with Learned-Prior-Conditioned Flow Matching">
+  <meta name="keywords" content="Flow Matching, Zero-shot TTS, FaCodec">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OZSpeech</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L7749G0HJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-L7749G0HJZ');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body" style="padding-bottom: 24px;">
+      <div class="container  is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">OZSpeech: One-step Zero-shot Speech Synthesis with
+              Learned-Prior-Conditioned Flow Matching</h1>
+            <!-- Publication Authors -->
+            <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://jasonppy.github.io/">Puyuan Peng</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://berniebear.github.io/">Po-Yao Huang</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://swdanielli.github.io/">Shang-Wen Li</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?hl=en&user=tJ_PrzgAAAAJ">Abdelrahman Mohamed</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cs.utexas.edu/~harwath/">David Harwath</a><sup>1</sup>,
+            </span>
+          </div> -->
+
+            <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>The University of Texas at Austin </span>
+            <span class="author-block"><sup>2</sup>FAIR, Meta </span>
+            <span class="author-block"><sup>3</sup>Rembrand</span>
+          </div> -->
+
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <!-- Link paper -->
+                  <!-- <a href="https://jasonppy.github.io/assets/pdfs/VoiceCraft.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper</span>
+                </a> -->
+                  <a href="https://github.com/ozspeech/OZSpeech"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <section id="abs" class="section" style="padding-top: 0px;">
+    <div class="container  is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Text-to-speech (TTS) systems have seen significant advancements in recent years, driven by improvements in
+              deep learning and neural network architectures. This paper introduces <b>OZSpeech</b>, the first TTS
+              method that explores optimal transport conditional flow matching with one-step sampling and a learned
+              prior as the condition. Instead of using traditional speech representations such as waveforms or
+              spectrograms, this method operates on disentangled factorized components of speech in token format.
+              Experiment results show that our method achieves superior performance over existing methods in content
+              accuracy, naturalness, prosody generation, and speaker style preservation.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <div class="hero-body">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Model Architecture</h2>
+            <img src="./static/images/overall.png" class="interpolation-image"
+              alt="Interpolate start reference image." />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tts" class="hero is-light">
+    <div class="hero-body">
+      <div class="container is-fluid">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Zero-Shot TTS: OZSpeech vs Baselines</h2>
+            <div class="content">
+              <p>All speakers are unseen during training. The audio samples are from the <b>LibriSpeech test-clean</b> dataset.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h3 class="title is-4">1s Prompt</h3>
+            <div class="content">
+              <p>Only the first 1 seconds of the speech prompt are given to the models.</p>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <table class="table" style="background-color: transparent;">
+            <thead>
+              <tr>
+                <th align="center"><strong></span>Target Transcript</strong></th>
+                <th align="center"><strong>Prompt</strong></th>
+                <th align="center"><strong>OZSpeech (Ours)</strong></th>
+                <th align="center"><strong>VoiceCraft</strong></th>
+                <th align="center"><strong>NaturalSpeech2</strong></th>
+                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
+                <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>Ground Truth</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="28%" style="text-align: left;">mary taylor however related the tale of zora to missus grey's
+                  private ear later</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/1995-1837-0019.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/1995-1836-0013.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/1995-1836-0013.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/1995-1836-0013.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/1995-1836-0013.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/1995-1836-0013.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">how brown you've got since you came home i wish i had an
+                  athlete to mow my orchard</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/237-134500-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/237-134493-0011.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/237-134493-0011.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/237-134493-0011.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/237-134493-0011.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/237-134493-0011.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">the moment i looked at my table i was aware that someone had
+                  rummaged among my papers</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/1580-141084-0040.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/1580-141083-0007.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/1580-141083-0007.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/1580-141083-0007.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/1580-141083-0007.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/1580-141083-0007.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">i think i must show you my patchwork girl said margolotte
+                  laughing at the boy's astonishment for she is rather difficult to explain</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/1284-1180-0000.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/1284-1180-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/1284-1180-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/1284-1180-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/1284-1180-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/1284-1180-0025.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">i wish you weren't so restless and didn't get so worked up
+                  over things she said sadly</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/237-126133-0019.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/237-134500-0033.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/237-134500-0033.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/237-134500-0033.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/237-134500-0033.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/237-134500-0033.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">a moment before the ghost of the ancient kingdom of the danes
+                  had looked forth through the vesture of the hazewrapped city</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/1089-134686-0004.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">we ought to have more attendants beth said louise approaching
+                  her cousin</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/6829-68769-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/6829-68771-0014.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/6829-68771-0014.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/6829-68771-0014.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/6829-68771-0014.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/6829-68771-0014.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">i think the next glass cat the magician makes will have
+                  neither brains nor heart for then it will not object to catching mice and may prove of some use to us
+                </td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/1284-1180-0005.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/1284-1180-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/1284-1180-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/1284-1180-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/1284-1180-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/1284-1180-0021.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">look yonder do you not see the moon slowly rising silvering
+                  the topmost branches of the chestnuts and the oaks</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/7127-75947-0027.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/7127-75947-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/7127-75947-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/7127-75947-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/7127-75947-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/7127-75947-0024.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">she looked at his heavy shoulders and big determined head
+                  thrust forward like a catapult in leash</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/prompt/4446-2271-0008.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ozspeech/4446-2275-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/voicecraft/4446-2275-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/ns2/4446-2275-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/valle/4446-2275-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/1s_prompt/groundtruth/4446-2275-0012.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h3 class="title is-4">3s Prompt</h3>
+            <div class="content">
+              <p>Only the first 3 seconds of the speech prompt are given to the models.</p>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <table class="table" style="background-color: transparent;">
+            <thead>
+              <tr>
+                <th align="center"><strong></span>Target Transcript</strong></th>
+                <th align="center"><strong>Prompt</strong></th>
+                <th align="center"><strong>OZSpeech (Ours)</strong></th>
+                <th align="center"><strong>VoiceCraft</strong></th>
+                <th align="center"><strong>NaturalSpeech2</strong></th>
+                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
+                <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>Ground Truth</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="28%" style="text-align: left;">why it's goliath as usual they both cried peering in</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/6930-81414-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">he often stopped to examine the trees nor did he cross a rivulet without attentively considering the quantity the velocity and the color of its waters</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/1320-122617-0029.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">the doctor who attended the injured creature in this case was simply told that she slipped and fell down stairs as she was coming down</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/8463-294828-0027.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/8463-287645-0006.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/8463-287645-0006.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/8463-287645-0006.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/8463-287645-0006.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/8463-287645-0006.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">lend me your ear for ten minutes and you shall learn just what stagecraft is</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/7176-88083-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/7176-92135-0008.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/7176-92135-0008.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/7176-92135-0008.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/7176-92135-0008.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/7176-92135-0008.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">upon this madame deigned to turn her eyes languishingly towards the comte observing</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/7127-75947-0015.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/7127-75947-0001.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/7127-75947-0001.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/7127-75947-0001.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/7127-75947-0001.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/7127-75947-0001.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">the news circulated with the rapidity of lightning during its progress it kindled every variety of coquetry desire and wild ambition</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/7127-75947-0015.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/7127-75946-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/7127-75946-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/7127-75946-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/7127-75946-0012.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/7127-75946-0012.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">she sat down in a rocking chair and clasping her hands in her lap rocked slowly back and forth i'm sorry said beth</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/6829-68771-0006.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/6829-68771-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/6829-68771-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/6829-68771-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/6829-68771-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/6829-68771-0025.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">not at all you are on the contrary most agreeable to me</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/7127-75947-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/7127-75946-0009.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/7127-75946-0009.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/7127-75946-0009.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/7127-75946-0009.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/7127-75946-0009.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">the sombre old trees like gigantic hearse plumes black and awful
+                </td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/5683-32879-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/5683-32866-0028.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/5683-32866-0028.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/5683-32866-0028.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/5683-32866-0028.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/5683-32866-0028.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">no thank you i'll just look at the whelps and leave a message about them with your shepherd</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/prompt/2094-142345-0027.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ozspeech/2094-142345-0051.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/voicecraft/2094-142345-0051.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/ns2/2094-142345-0051.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/valle/2094-142345-0051.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/3s_prompt/groundtruth/2094-142345-0051.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h3 class="title is-4">5s Prompt</h3>
+            <div class="content">
+              <p>Only the first 5 seconds of the speech prompt are given to the models.</p>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <table class="table" style="background-color: transparent;">
+            <thead>
+              <tr>
+                <th align="center"><strong></span>Target Transcript</strong></th>
+                <th align="center"><strong>Prompt</strong></th>
+                <th align="center"><strong>OZSpeech (Ours)</strong></th>
+                <th align="center"><strong>VoiceCraft</strong></th>
+                <th align="center"><strong>NaturalSpeech2</strong></th>
+                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
+                <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>Ground Truth</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="28%" style="text-align: left;">what shall we do with the mingoes at the door they count six and this singer is as good as nothing</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/1320-122612-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/1320-122617-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/1320-122617-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/1320-122617-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/1320-122617-0021.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/1320-122617-0021.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+                <td width="28%" style="text-align: left;">after early nightfall the yellow lamps would light up here and there the squalid quarter of the brothels</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/1089-134691-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/1089-134686-0002.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/1089-134686-0002.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/1089-134686-0002.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/1089-134686-0002.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/1089-134686-0002.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">why it's goliath as usual they both cried peering in</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/6930-81414-0024.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/6930-76324-0025.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">rejoice in our presence said the air and the sunlight</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/672-122797-0055.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/672-122797-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/672-122797-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/672-122797-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/672-122797-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/672-122797-0018.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">not for a crown or a kingdom or our goodness but for our sins</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/2830-3979-0003.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/2830-3980-0062.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/2830-3980-0062.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/2830-3980-0062.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/2830-3980-0062.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/2830-3980-0062.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">i discovered and put out a fire that would have destroyed the whole plant but marshall never even thanked me</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/6829-68769-0048.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/6829-68769-0032.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/6829-68769-0032.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/6829-68769-0032.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/6829-68769-0032.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/6829-68769-0032.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">to relieve her from both he laid his hand with force upon his heart and said do you believe me</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/4992-41806-0011.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/4992-23283-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/4992-23283-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/4992-23283-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/4992-23283-0018.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/4992-23283-0018.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">he himself recited the same passage in french and politely pointed out the parts in which he thought that i had improved on the original
+                </td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/3729-6852-0036.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/3729-6852-0039.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/3729-6852-0039.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/3729-6852-0039.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/3729-6852-0039.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/3729-6852-0039.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">but first i will tell you that for many years i have longed for a servant to help me with the housework and to cook the meals and wash the dishes</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/1284-1180-0032.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/1284-1180-0026.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/1284-1180-0026.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/1284-1180-0026.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/1284-1180-0026.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/1284-1180-0026.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+              <tr>
+                <td width="28%" style="text-align: left;">we sat with the officers some little time after dinner and then went ashore</td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/prompt/8455-210777-0019.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ozspeech/8455-210777-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/voicecraft/8455-210777-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/ns2/8455-210777-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/valle/8455-210777-0023.wav" type="audio/wav">
+                  </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                    <source src="static/audio_samples/5s_prompt/groundtruth/8455-210777-0023.wav" type="audio/wav">
+                  </audio></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+  </section>
+
+  <!-- <footer class="footer">
+    <div class="container is-fluid">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Licenses</h2>
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+                Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              Website source code based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+              project page.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+</body>
+
+</html>
