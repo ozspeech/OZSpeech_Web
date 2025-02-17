@@ -105,7 +105,7 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              Text-to-speech (TTS) systems have seen significant advancements in recent years, driven by improvements in deep learning and network architectures. Viewing the output speech as a data distribution, previous approaches often employ traditional speech representations, such as waveforms or spectrograms, within the Flow Matching framework. However, these methods have limitations, including overlooking various speech attributes and incurring high computational costs due to additional constraints introduced during training. To address these challenges, we introduce \textit{OZSpeech}, the first TTS method to explore optimal transport conditional flow matching with one-step sampling and a learned prior as the condition, effectively disregarding preceding states and reducing the number of sampling steps. Our approach operates on disentangled, factorized components of speech in token format, enabling accurate modeling of each speech attribute, which enhances the TTS system's ability to precisely clone the prompt speech. Experimental results show that our method achieves promising performance over existing methods in content accuracy, naturalness, prosody generation, and speaker style preservation.
+              Text-to-speech (TTS) systems have seen significant advancements in recent years, driven by improvements in deep learning and network architectures. Viewing the output speech as a data distribution, previous approaches often employ traditional speech representations, such as waveforms or spectrograms, within the Flow Matching framework. However, these methods have limitations, including overlooking various speech attributes and incurring high computational costs due to additional constraints introduced during training. To address these challenges, we introduce <b>OZSpeech</b>, the first TTS method to explore optimal transport conditional flow matching with one-step sampling and a learned prior as the condition, effectively disregarding preceding states and reducing the number of sampling steps. Our approach operates on disentangled, factorized components of speech in token format, enabling accurate modeling of each speech attribute, which enhances the TTS system's ability to precisely clone the prompt speech. Experimental results show that our method achieves promising performance over existing methods in content accuracy, naturalness, prosody generation, and speaker style preservation.
             </p>
           </div>
 
@@ -157,9 +157,9 @@
                 <th align="center"><strong>Prompt</strong></th>
                 <th align="center"><strong>OZSpeech (Ours)</strong></th>
                 <th align="center"><strong>VoiceCraft</strong></th>
-                <th align="center"><strong>NaturalSpeech2</strong></th>
-                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
+                <th align="center"><strong>NaturalSpeech 2</strong></th>
                 <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>F5-TTS</strong></th>
                 <th align="center"><strong>Ground Truth</strong></th>
               </tr>
             </thead>
@@ -183,6 +183,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/1995-1836-0013.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/1995-1836-0013.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/1995-1836-0013.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -204,6 +207,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/valle/237-134493-0011.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/237-134493-0011.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/237-134493-0011.wav" type="audio/wav">
                   </audio></td>
@@ -227,6 +233,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/1580-141083-0007.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/1580-141083-0007.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/1580-141083-0007.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -248,6 +257,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/valle/1284-1180-0025.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/1284-1180-0025.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/1284-1180-0025.wav" type="audio/wav">
                   </audio></td>
@@ -271,6 +283,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/237-134500-0033.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/237-134500-0033.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/237-134500-0033.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -293,6 +308,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/1089-134691-0025.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/1089-134691-0025.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/1089-134691-0025.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -314,6 +332,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/valle/6829-68771-0014.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/6829-68771-0014.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/6829-68771-0014.wav" type="audio/wav">
                   </audio></td>
@@ -338,6 +359,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/1284-1180-0021.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/1284-1180-0021.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/1284-1180-0021.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -360,6 +384,9 @@
                     <source src="static/audio_samples/1s_prompt/valle/7127-75947-0024.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/7127-75947-0024.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/7127-75947-0024.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -381,6 +408,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/valle/4446-2275-0012.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/1s_prompt/f5/4446-2275-0012.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/1s_prompt/groundtruth/4446-2275-0012.wav" type="audio/wav">
                   </audio></td>
@@ -406,8 +436,8 @@
                 <th align="center"><strong>OZSpeech (Ours)</strong></th>
                 <th align="center"><strong>VoiceCraft</strong></th>
                 <th align="center"><strong>NaturalSpeech2</strong></th>
-                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
                 <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>F5-TTS</strong></th>
                 <th align="center"><strong>Ground Truth</strong></th>
               </tr>
             </thead>
@@ -430,6 +460,9 @@
                     <source src="static/audio_samples/3s_prompt/valle/6930-76324-0025.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/6930-76324-0025.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/6930-76324-0025.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -450,6 +483,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/valle/1320-122612-0003.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/1320-122612-0003.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/1320-122612-0003.wav" type="audio/wav">
                   </audio></td>
@@ -472,6 +508,9 @@
                     <source src="static/audio_samples/3s_prompt/valle/8463-287645-0006.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/8463-287645-0006.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/8463-287645-0006.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -492,6 +531,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/valle/7176-92135-0008.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/7176-92135-0008.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/7176-92135-0008.wav" type="audio/wav">
                   </audio></td>
@@ -514,6 +556,9 @@
                     <source src="static/audio_samples/3s_prompt/valle/7127-75947-0001.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/7127-75947-0001.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/7127-75947-0001.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -534,6 +579,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/valle/7127-75946-0012.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/7127-75946-0012.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/7127-75946-0012.wav" type="audio/wav">
                   </audio></td>
@@ -556,6 +604,9 @@
                     <source src="static/audio_samples/3s_prompt/valle/6829-68771-0025.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/6829-68771-0025.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/6829-68771-0025.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -576,6 +627,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/valle/7127-75946-0009.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/7127-75946-0009.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/7127-75946-0009.wav" type="audio/wav">
                   </audio></td>
@@ -599,6 +653,9 @@
                     <source src="static/audio_samples/3s_prompt/valle/5683-32866-0028.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/5683-32866-0028.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/5683-32866-0028.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -619,6 +676,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/valle/2094-142345-0051.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/3s_prompt/f5/2094-142345-0051.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/3s_prompt/groundtruth/2094-142345-0051.wav" type="audio/wav">
                   </audio></td>
@@ -644,8 +704,8 @@
                 <th align="center"><strong>OZSpeech (Ours)</strong></th>
                 <th align="center"><strong>VoiceCraft</strong></th>
                 <th align="center"><strong>NaturalSpeech2</strong></th>
-                <!-- <th align="center"><strong>F5-TTS</strong></th> -->
                 <th align="center"><strong>VALL-E</strong></th>
+                <th align="center"><strong>F5-TTS</strong></th>
                 <th align="center"><strong>Ground Truth</strong></th>
               </tr>
             </thead>
@@ -668,6 +728,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/1320-122617-0021.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/1320-122617-0021.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/1320-122617-0021.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -687,6 +750,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/valle/1089-134686-0002.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/1089-134686-0002.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/1089-134686-0002.wav" type="audio/wav">
                   </audio></td>
@@ -709,6 +775,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/6930-76324-0025.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/6930-76324-0025.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/6930-76324-0025.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -729,6 +798,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/valle/672-122797-0018.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/672-122797-0018.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/672-122797-0018.wav" type="audio/wav">
                   </audio></td>
@@ -751,6 +823,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/2830-3980-0062.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/2830-3980-0062.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/2830-3980-0062.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -772,6 +847,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/6829-68769-0032.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/6829-68769-0032.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/6829-68769-0032.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -792,6 +870,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/valle/4992-23283-0018.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/4992-23283-0018.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/4992-23283-0018.wav" type="audio/wav">
                   </audio></td>
@@ -815,6 +896,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/3729-6852-0039.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/3729-6852-0039.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/3729-6852-0039.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -836,6 +920,9 @@
                     <source src="static/audio_samples/5s_prompt/valle/1284-1180-0026.wav" type="audio/wav">
                   </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/1284-1180-0026.wav" type="audio/wav">
+                </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/1284-1180-0026.wav" type="audio/wav">
                   </audio></td>
               </tr>
@@ -856,6 +943,9 @@
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/valle/8455-210777-0023.wav" type="audio/wav">
                   </audio></td>
+                <td width="12%" style="text-align: center;"><audio controls="">
+                  <source src="static/audio_samples/5s_prompt/f5/8455-210777-0023.wav" type="audio/wav">
+                </audio></td>
                 <td width="12%" style="text-align: center;"><audio controls="">
                     <source src="static/audio_samples/5s_prompt/groundtruth/8455-210777-0023.wav" type="audio/wav">
                   </audio></td>
